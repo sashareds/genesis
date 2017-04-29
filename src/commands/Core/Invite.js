@@ -18,9 +18,11 @@ class Invite extends Command {
    * Run the command
    * @param {Message} message Message with a command to handle, reply to,
    *                          or perform an action based on parameters.
+   * @param {string} language lanugage to use in calling
    */
-  run(message) {
-    this.messageManager.reply(message, process.env.INVITE_URL || 'No Invite Set', true, false);
+  run(message, language) {
+    this.messageManager.reply(message, process.env.INVITE_URL ||
+      this.stringManager.getString('no_inv_link', null, language, this.id), true, false);
   }
 }
 

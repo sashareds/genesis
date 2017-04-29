@@ -11,7 +11,7 @@ class SalesEmbed extends BaseEmbed {
    * @param {Array.<FeaturedItemSales>} sales - The sales to be displayed as featured or popular
    */
   constructor(bot, sales) {
-    super();
+    super(bot);
 
     this.color = 0x0000ff;
     this.title = `Worldstate - ${sales[0].isPopular ? 'Popular Sales' : 'Featured Deal'}`;

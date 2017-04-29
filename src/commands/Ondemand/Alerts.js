@@ -20,12 +20,12 @@ class Alerts extends Command {
    * @param {Message} message Message with a command to handle, reply to,
    *                          or perform an action based on parameters.
    */
-  run(message) {
+  run(message, language) {
     this.bot.settings.getChannelPlatform(message.channel)
       .then(platform => this.bot.worldStates[platform].getData())
       .then((ws) => {
         const alerts = ws.alerts.filter(a => !a.getExpired());
-        this.messageManager.embed(message, new AlertEmbed(this.bot, alerts), true, false);
+        this.messageManager.embed(message, new AlertEmbed(this.bot, language, alerts), true, false);
       })
       .catch(this.logger.error);
   }

@@ -13,7 +13,7 @@ class RaidStatEmbed extends BaseEmbed {
    * @param {string} query - Query for this embed
    */
   constructor(bot, userStats, query) {
-    super();
+    super(bot);
     this.title = `Raid statistics for ${query}`;
     this.url = encodeURI(`https://trials.wf/player/?user=${query}`);
     this.color = 0xaf5b4b;

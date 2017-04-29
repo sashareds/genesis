@@ -102,6 +102,12 @@ class Command {
      * @type {MessageManager}
      */
     this.messageManager = bot.messageManager;
+
+    /**
+     * String manager /internationalization manager
+     * @type {StringManager}
+     */
+    this.stringManager = bot.stringManager;
   }
 
   /**

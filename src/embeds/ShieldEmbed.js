@@ -21,7 +21,7 @@ class ShieldEmbed extends BaseEmbed {
    * @param {Array<string>} params - array of string parameters
    */
   constructor(bot, params) {
-    super();
+    super(bot);
     this.color = params && params.length > 3 ? 0x00ff00 : 0xff0000;
     this.title = 'Warframe - Shields';
     this.url = 'https://warframe.com';

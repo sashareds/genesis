@@ -2,7 +2,6 @@
 
 const Command = require('../../Command.js');
 
-
 /**
  * Describes the Help command
  */
@@ -13,8 +12,6 @@ class Help extends Command {
    */
   constructor(bot) {
     super(bot, 'core.help', 'help', 'Display this message');
-
-    this.helpEmbed = null;
 
     /**
      * Help reply messsage for alerting a user to check their direct messages.
@@ -27,11 +24,24 @@ class Help extends Command {
   /**
    * Send help message
    * @param {Message} message Message to reply to
+   * @param {string} language lanugage to use in calling
    */
-  run(message) {
+  run(message, language) {
     if (message.channel.type !== 'dm') {
       this.messageManager.reply(message, this.helpReplyMsg, true, false);
     }
+
+    this.warframeStr = this.stringManager.getString('warframe', null, language, this.id);
+    this.coreCmdTitleStr = this.stringManager.getString('core_cmds', null, language, this.id);
+    this.settingsCmdTitleStr = this.stringManager.getString('settings_cmds', null, language, this.id);
+    this.helpExclam = this.stringManager.getString('help_exclam', null, language, this.id);
+    this.ownerOnly = this.stringManager.getString('owner_only', null, language, this.id);
+    this.warframe = this.stringManager.getString('warframe', null, language, this.id);
+    this.cmds = this.stringManager.getString('cmds', null, language, this.id);
+    this.worldstate = this.stringManager.getString('worldstate', null, language, this.id);
+    this.onDemand = this.stringManager.getString('on_demand', null, language, this.id);
+    this.utilityStr = this.stringManager.getString('utility', null, language, this.id);
+
     this.sendCoreEmbed(message);
     if (message.channel.type === 'dm' ||
        message.channel
@@ -60,7 +70,7 @@ class Help extends Command {
           inline: false,
         }
       )));
-      this.sendEmbedForCommands(message, commands, 'Help!', 0x00ff00);
+      this.sendEmbedForCommands(message, commands, this.helpExclam, 0x00ff00);
     }).catch(this.logger.error);
   }
 
@@ -72,7 +82,7 @@ class Help extends Command {
           value: u.description,
           inline: false,
         })));
-      this.sendEmbedForCommands(message, ownerCommands, 'Owner Only', 0xff0000);
+      this.sendEmbedForCommands(message, ownerCommands, this.ownerOnly, 0xff0000);
     }).catch(this.logger.error);
   }
 
@@ -84,7 +94,7 @@ class Help extends Command {
           value: u.description,
           inline: false,
         })));
-      this.sendEmbedForCommands(message, commands, 'Core Commands', 0x000000);
+      this.sendEmbedForCommands(message, commands, this.coreCmdTitleStr, 0x000000);
     }).catch(this.logger.error);
   }
 
@@ -96,7 +106,7 @@ class Help extends Command {
           value: u.description,
           inline: false,
         })));
-      this.sendEmbedForCommands(message, commands, 'Warframe Commands - Worldstate', 0x4068BD);
+      this.sendEmbedForCommands(message, commands, `${this.warframe} ${this.cmds} - ${this.worldstate}`, 0x4068BD);
     }).catch(this.logger.error);
   }
 
@@ -108,7 +118,7 @@ class Help extends Command {
           value: u.description,
           inline: false,
         })));
-      this.sendEmbedForCommands(message, commands, 'Warframe Commands - Utility', 0x4068BD);
+      this.sendEmbedForCommands(message, commands, `${this.warframe} ${this.cmds} - ${this.utilityStr}`, 0x4068BD);
     }).catch(this.logger.error);
   }
 
@@ -120,7 +130,7 @@ class Help extends Command {
           value: u.description,
           inline: false,
         })));
-      this.sendEmbedForCommands(message, ownerCommands, 'Settings Commands', 0xe5c100);
+      this.sendEmbedForCommands(message, ownerCommands, this.settingsCmdTitleStr, 0xe5c100);
     }).catch(this.logger.error);
   }
 
@@ -130,10 +140,10 @@ class Help extends Command {
       fields: [].concat(...commands),
       color,
     };
-    if (title === 'Core Commands') {
+    if (title === this.coreCmdTitleStr) {
       embed.type = 'rich';
       embed.thumbnail = {
-        url: 'https://github.com/aliasfalse/genesis/raw/master/src/resources/cephalontransparent.png',
+        url: 'https://i.imgur.com/mXBjkuo.png',
       };
     }
     if (commands.length > 0) {

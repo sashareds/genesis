@@ -11,7 +11,7 @@ class WikiEmbed extends BaseEmbed {
    * @param {Array.<Attachment>} details details to derive data from
    */
   constructor(bot, details) {
-    super();
+    super(bot);
     const item = Object.values(details.items)[0];
     this.title = item.title;
     this.type = 'rich';

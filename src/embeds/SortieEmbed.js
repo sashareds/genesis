@@ -11,7 +11,7 @@ class SortieEmbed extends BaseEmbed {
    * @param {Sortie} sortie - The sortie to be included in the embed
    */
   constructor(bot, sortie) {
-    super();
+    super(bot);
 
     this.color = 0x00ff00;
     if (typeof sortie !== 'undefined' && sortie) {

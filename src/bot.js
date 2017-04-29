@@ -8,6 +8,7 @@ const Database = require('./settings/Database.js');
 const Tracker = require('./Tracker.js');
 const MessageManager = require('./settings/MessageManager.js');
 const Notifier = require('./notifications/Notifier.js');
+const StringManager = require('./settings/StringManager.js');
 
 /**
  * A collection of strings that are used by the parser to produce markdown-formatted text
@@ -100,6 +101,12 @@ class Genesis {
      * @type {boolean}
      */
     this.readyToExecute = false;
+
+    /**
+     * String Manager for fetching internationalized strings
+     * @type {StringManager}
+     */
+    this.stringManager = new StringManager(this);
 
     /**
      * Command handler for this Bot

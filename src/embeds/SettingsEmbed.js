@@ -13,7 +13,7 @@ class SettingsEmbed extends BaseEmbed {
    * @param {number} pageNumber - Whether or not this is a 'tracked' embed
    */
   constructor(bot, channel, settings, pageNumber) {
-    super();
+    super(bot);
     switch (pageNumber) {
       case 1:
         this.color = 0x3366ff;

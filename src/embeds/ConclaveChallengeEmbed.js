@@ -10,11 +10,12 @@ const values = ['all', 'day', 'week'];
 class ConclaveChallengeEmbed extends BaseEmbed {
   /**
    * @param {Genesis} bot - An instance of Genesis
+   * @param {string} language lanugage to use in calling
    * @param {Array.<ConclaveChallenge>} challenges - The challenges to be included in the embed
    * @param {string} category - The category of the challenges in the embed
    */
-  constructor(bot, challenges, category) {
-    super();
+  constructor(bot, language, challenges, category) {
+    super(bot);
 
     const categoryInValues = typeof category !== 'undefined' && values.indexOf(category.toLowerCase()) !== -1;
     this.color = categoryInValues ? 0x00ff00 : 0xff0000;
@@ -23,18 +24,23 @@ class ConclaveChallengeEmbed extends BaseEmbed {
         c => (c.category === category.toLowerCase() || category.toLowerCase() === 'all') &&
         !c.isRootChallenge()).map(c => ({
           name: c.mode,
-          value: `${c.description} expires in ${c.getEndString()}`,
+          value: this.stringManager.getString('desc_w_expire', null, language, '')
+            .replace('$0', c.description).replace('$1', c.getEndString()),
         }));
     } else {
       this.fields = [{
-        name: 'No such conclave category',
-        value: `Valid values: ${values.join(', ')}`,
+        name: this.stringManager.getString('no_category', null, language, ''),
+        value: this.stringManager.getString('valid_values', null, language, '')
+          .replace('$0', values.join(', ')),
       }];
     }
-    this.title = 'Worldstate - Conclave Challenges';
-    this.description = `Current Challenges for category: ${category || 'none'}`;
+    this.title = `${this.stringManager
+      .getString('warframe', null, language, '')} - ${this.stringManager
+      .getString('cc_challenge', null, language, '')}`;
+    this.description = this.stringManager
+      .getString('desc_w_expire', null, language, '').replace('$1', category || 'none');
     this.thumbnail = {
-      url: 'https://raw.githubusercontent.com/aliasfalse/genesis/master/src/resources/conclave.png',
+      url: 'https://i.imgur.com/KDzKPYA.png',
     };
   }
 }

@@ -11,7 +11,7 @@ class EventEmbed extends BaseEmbed {
    * @param {Array.<Event>} events - The fissures to be included in the embed
    */
   constructor(bot, events) {
-    super();
+    super(bot);
 
     if (events.length < 2) {
       this.title = 'Worldstate - Events';

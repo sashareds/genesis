@@ -51,8 +51,9 @@ class Ping extends Command {
    * Run the command
    * @param {Message} message Message with a command to handle, reply to,
    *                          or perform an action based on parameters.
+   * @param {string} language lanugage to use in calling
    */
-  run(message) {
+  run(message, language) {
     const hosts = ['content.warframe.com', 'forums.warframe.com', 'wf.christx.tw', 'store.warframe.com'];
     const results = [];
 
@@ -76,14 +77,17 @@ class Ping extends Command {
             title: 'PONG',
             type: 'rich',
             fields: [
-              { name: `Response time (shard ${this.bot.shardId + 1} of ${this.bot.shardCount})`,
+              {
+                name: this.stringManager.getString('response_time', null, language, this.id)
+                  .replace('$0', this.bot.shardId + 1).replace('$1', this.bot.shardCount),
                 value: `${afterSend - now}ms`,
               },
               ...results,
             ],
             footer: {
               thumbnail_url: '_ _',
-              text: `Uptime: ${timeDeltaToString(this.bot.client.uptime)}`,
+              text: this.stringManager.getString('uptime', null, language, this.id)
+                .replace('$0', timeDeltaToString(this.bot.client.uptime)),
             },
           },
         });

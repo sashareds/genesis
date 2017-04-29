@@ -12,7 +12,7 @@ class PriceCheckEmbed extends BaseEmbed {
    * @param {string} query - query that this is a result for
    */
   constructor(bot, result, query) {
-    super();
+    super(bot);
     this.description = `Price query for ${query}`;
     if (typeof result[0] === 'string') {
       this.color = 0xff0000;

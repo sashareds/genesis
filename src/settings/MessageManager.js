@@ -14,6 +14,7 @@ class MessaageManager {
     this.logger = bot.logger;
     this.settings = bot.settings;
     this.owner = bot.owner;
+    this.stringManager = bot.stringManager;
 
     /**
      * Zero space whitespace character to prepend to any messages sent
@@ -167,7 +168,7 @@ class MessaageManager {
     this.settings.getChannelResponseToSettings(message.channel)
       .then((respondToSettings) => {
         if (respondToSettings === '1') {
-          return message.reply('Settings updated')
+          return message.reply(this.stringManager.getString('settings_updated', message))
             .then((msg) => {
               this.deleteCallAndResponse(message, msg, deleteOriginal, deleteResponse);
             });
@@ -189,10 +190,10 @@ class MessaageManager {
       .then((deleteAfterRespond) => {
         if (deleteAfterRespond === '1') {
           if (deleteCall && call.deletable) {
-            call.delete(10000).catch(() => `Couldn't delete ${call}`);
+            call.delete(10000).catch(() => this.stringManager.getString('cannot_delete', null, '', call));
           }
           if (deleteResponse && response.deletable) {
-            call.delete(10000).catch(() => `Couldn't delete ${call}`);
+            call.delete(10000).catch(() => this.stringManager.getString('cannot_delete', null, '', response));
           }
         }
       })

@@ -7,7 +7,9 @@ class BaseEmbed {
   /**
    * @param {Genesis} bot - An instance of Genesis
    */
-  constructor() {
+  constructor(bot) {
+    this.stringManager = bot.stringManager;
+    Object.defineProperty(this, 'stringManager', { enumerable: false, configurable: false });
     this.url = 'https://warframe.com';
 
     this.footer = {

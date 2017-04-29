@@ -98,10 +98,6 @@ class Armor extends Command {
             value: armorString,
           },
         ],
-        footer: {
-          icon_url: 'https://avatars1.githubusercontent.com/u/24436369',
-          text: 'Data evaluated by Warframe Community Developers',
-        },
       };
       this.messageManager.embed(message, embed, true, false);
     } else {
@@ -117,11 +113,6 @@ class Armor extends Command {
   sendUsage(message) {
     const embed = {
       color: 0xff0000,
-      author: {
-        name: this.bot.client.user.clientID,
-        icon_url: this.bot.client.user.avatarURL,
-      },
-      title: 'Warframe - Armor',
       url: 'https://warframe.com',
       thumbnail: {
         url: 'https://raw.githubusercontent.com/aliasfalse/genesis/master/src/resources/grineer.png',
@@ -133,10 +124,6 @@ class Armor extends Command {
           `${this.bot.prefix}armor (Current Armor) Calculate damage resistance.`,
         },
       ],
-      footer: {
-        icon_url: 'https://avatars1.githubusercontent.com/u/24436369',
-        text: 'Data evaluated by Warframe Community Developers',
-      },
     };
 
     this.messageManager.embed(message, embed, true, false);

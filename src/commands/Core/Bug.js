@@ -35,10 +35,10 @@ class BugReport extends Command {
    * Run the command
    * @param {Message} message Message with a command to handle, reply to,
    *                          or perform an action based on parameters.
+   * @param {string} language lanugage to use in calling
    */
-  run(message) {
+  run(message, language) {
     const bugReport = message.strippedContent.match(this.regex)[1];
-
     if (this.bot.owner) {
       if (bugReport) {
         const params = bugReport.split('|');
@@ -69,7 +69,7 @@ class BugReport extends Command {
           }
         }
         this.messageManager.sendDirectEmbedToOwner(embed);
-        this.messageManager.reply(message, 'Bug report sent.', true, true);
+        this.messageManager.reply(message, this.stringManager.getString('bug_rpt_sent', null, language, this.id), true, true);
       } else {
         const embed = {
           author: {
@@ -77,7 +77,7 @@ class BugReport extends Command {
             name: `${message.author.username}#${message.author.discriminator}`,
           },
           title: `Bug Report | ${message.author}`,
-          fields: [{ name: '_ _', value: 'Need to provide a bug report, see `/help` for syntax.' }],
+          fields: [{ name: '_ _', value: this.stringManager.getString('bug_rpt_need_info', null, language, this.id) }],
         };
         this.messageManager.embed(message, embed, true, false);
       }

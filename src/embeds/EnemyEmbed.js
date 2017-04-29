@@ -11,7 +11,7 @@ class EnemyEmbed extends BaseEmbed {
    * @param {Array.<PersistentEnemy>} enemies - The persistentEnemies to be included in the embed
    */
   constructor(bot, enemies) {
-    super();
+    super(bot);
 
     this.thumbnail = {
       url: 'http://i.imgur.com/KDMV660.png',

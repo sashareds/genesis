@@ -11,7 +11,7 @@ class FissureEmbed extends BaseEmbed {
    * @param {Array.<Fissure>} fissures - The fissures to be included in the embed
    */
   constructor(bot, fissures) {
-    super();
+    super(bot);
 
     if (fissures.length < 2) {
       this.title = 'Worldstate - Void Fissures';
