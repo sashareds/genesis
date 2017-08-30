@@ -14,8 +14,8 @@
       "response_enabled":"Operator, responding to settings changes is now enabled.",
       "response_disabled":"Operator, responding to settings changes is now disabled.",
       "response_toggle_error":"An error occurred toggling `response`.",
-      "language_set":"Lanuage set to `$language`.",
-      "language_not_set":"Language not set to `$language`. Provided language was either invalid or already set."
+      "language_set":"語言切換至 '$language'。",
+      "language_not_set":"語言無法切換至 '$language'。您所選擇的語言是沒有此選項或已設置。"
     }
   }
 }
