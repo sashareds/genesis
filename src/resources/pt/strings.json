@@ -1,7 +1,7 @@
 {
   "languages":{
     "en-US":{
-      "damage_reply":"Operador $author, aqui está o fluxograma dos tipos de dano a seu pedido.",
+      "damage_reply":"Operador $author, aqui está o fluxograma dos tipos de dano, como pedido.",
       "override_enabled":"Operador, a substituição agora está ativada.",
       "override_disabled":"Operador, a substituição agora está desativada.",
       "override_toggle_error":"Um erro ocorreu ao ativar `substituição`.",
