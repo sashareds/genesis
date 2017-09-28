@@ -1,5 +1,8 @@
 'use strict';
 
+const https = require('https');
+const request = require('request-promise');
+
 /**
  * MessageManager for
  */
@@ -208,12 +211,25 @@ class MessaageManager {
     }
   }
 
-  async webhook(webhookId, embed) {
-    this.bot.client.fetchWebhook(webhookId).sendSlackMessage({
-      username: this.bot.client.user.username,
-      attachments: [embed],
-    })
-    .catch(this.logger.error);
+  async webhook(embed, webhook) {
+    const options = {
+      host: 'discordapp.com',
+      path: `/api/messages/webhooks/${webhook.id}/${webhook.token}`,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(JSON.stringify(embed), 'utf8'),
+      },
+    };
+    const post = https.request(options, (response) => {
+      this.logger.debug(`STATUS: ${response.statusCode}\nHEADERS: ${JSON.stringify(response.headers)}`);
+      response.on('end', () => {
+        this.logger.debug('Post complete.');
+      });
+    });
+    post.on('error', error => this.logger.error(error));
+    post.write(JSON.stringify(embed));
+    post.end();
   }
 }
 

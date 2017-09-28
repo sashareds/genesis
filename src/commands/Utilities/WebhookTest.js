@@ -12,8 +12,8 @@ class UserInfo extends Command {
    * @param {Bot} bot The bot object
    */
   constructor(bot) {
-    super(bot, 'util.userinfo', 'userinfodsfpoigjs', 'Get info about a user');
-    this.regex = new RegExp(`^${this.call}\\s*((?:\\<\\@?\\!?)?\\d+(?:\\>)?)?`);
+    super(bot, 'util.userinfowebhook', 'userinfoWebhook', 'Get info about a user');
+    this.regex = new RegExp(`^${this.call}\\s*((?:\\<\\@?\\!?)?\\d+(?:\\>)?)?`, 'i');
   }
 
   async run(message) {
@@ -50,7 +50,11 @@ class UserInfo extends Command {
         guildsWithUser.splice(0, 24) :
         guildsWithUser;
     const embed = new UserInfoEmbed(this.bot, guilds, user, member, message);
-    this.messageManager.embed(message, embed, true, false);
+    await this.messageManager.webhook({
+      username: this.bot.client.user.username,
+      avatar_url: this.bot.client.user.avatarURL,
+      embeds: [embed],
+    }, webhook);
     return this.messageManager.statuses.SUCCESS;
   }
 }
