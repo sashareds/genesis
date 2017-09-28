@@ -16,7 +16,7 @@ class UserInfo extends Command {
     this.regex = new RegExp(`^${this.call}\\s*((?:\\<\\@?\\!?)?\\d+(?:\\>)?)?`, 'i');
   }
 
-  async run(message) {
+  async run(message, ctx) {
     const params = message.strippedContent.match(this.regex);
     let user;
     let member;
@@ -47,14 +47,10 @@ class UserInfo extends Command {
       .filter(guild => guild.members.get(user.id));
 
     const guilds = guildsWithUser.length > 25 ?
-        guildsWithUser.splice(0, 24) :
-        guildsWithUser;
+      guildsWithUser.splice(0, 24) :
+      guildsWithUser;
     const embed = new UserInfoEmbed(this.bot, guilds, user, member, message);
-    await this.messageManager.webhook({
-      username: this.bot.client.user.username,
-      avatar_url: this.bot.client.user.avatarURL,
-      embeds: [embed],
-    }, webhook);
+    await this.messageManager.webhook(ctx, { embed: this.messageManager.webhookWrapper(embed) });
     return this.messageManager.statuses.SUCCESS;
   }
 }

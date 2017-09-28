@@ -765,7 +765,11 @@ class Database {
     const prefix = await this.getChannelSetting(channel, 'prefix');
     const allowCustom = await this.getChannelSetting(channel, 'allowCustom') === '1';
     const allowInline = await this.getChannelSetting(channel, 'allowInline') === '1';
-    return { prefix, allowCustom, allowInline };
+    const webhook = {
+      id: await this.getChannelSetting(channel, 'webhookId'),
+      token: await this.getChannelSetting(channel, 'webhookToken'),
+    };
+    return { prefix, allowCustom, allowInline, webhook, channel };
   }
 
   async getCustomCommands() {

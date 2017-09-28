@@ -1,13 +1,9 @@
 'use strict';
 
-const https = require('https');
-const request = require('request-promise');
-
 /**
  * MessageManager for
  */
 class MessaageManager {
-
   /**
    * Construct a message manager for sending and managing messages
    * @param {Genesis} bot bot containing necessary settings
@@ -17,6 +13,7 @@ class MessaageManager {
     this.logger = bot.logger;
     this.settings = bot.settings;
     this.owner = bot.owner;
+    this.discord = bot.discord;
 
     /**
      * Zero space whitespace character to prepend to any messages sent
@@ -211,25 +208,43 @@ class MessaageManager {
     }
   }
 
-  async webhook(embed, webhook) {
-    const options = {
-      host: 'discordapp.com',
-      path: `/api/messages/webhooks/${webhook.id}/${webhook.token}`,
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Content-Length': Buffer.byteLength(JSON.stringify(embed), 'utf8'),
-      },
+  async webhook(ctx, { text = '_ _', embed = undefined }) {
+    if (ctx.webhook.id && ctx.webhook.token) {
+      const client = new this.discord.WebhookClient(ctx.webhook.id, ctx.webhook.token);
+      return client.send(text, embed);
+    }
+    if (ctx.channel.permissionsFor(this.client.user.id).has('MANAGE_WEBHOOKS')) {
+      const newWebhook = await ctx.channel.createWebhook(this.client.user.username);
+      await this.settings.setChannelSetting('webhookId', newWebhook.id);
+      await this.settings.setChannelSetting('webhookToken', newWebhook.token);
+      ctx.webhook = newWebhook;
+      return this.webhook(ctx, { text, embed });
+    }
+    if (ctx.message) {
+      if (embed) {
+        return Promise.all(embed.embeds.map(subEmbed =>
+          this.embed(ctx.message, subEmbed, ctx.deleteCall, ctx.deleteResponse)));
+      }
+      return this.reply(ctx.message, text, ctx.deleteCall, ctx.deleteResponse);
+    }
+    return Promise.all(embed.embeds.map(subEmbed =>
+      this.embedToChannel(ctx.chnnel, subEmbed, text, ctx.deleteResponse)));
+  }
+
+  webhookWrapEmbed(embed) {
+    return {
+      username: this.client.user.username,
+      avatarURL: this.client.user.avatarURL,
+      embeds: [embed],
     };
-    const post = https.request(options, (response) => {
-      this.logger.debug(`STATUS: ${response.statusCode}\nHEADERS: ${JSON.stringify(response.headers)}`);
-      response.on('end', () => {
-        this.logger.debug('Post complete.');
-      });
-    });
-    post.on('error', error => this.logger.error(error));
-    post.write(JSON.stringify(embed));
-    post.end();
+  }
+
+  webhookWrapEmbeds(embeds) {
+    return {
+      username: this.client.user.username,
+      avatarURL: this.client.user.avatarURL,
+      embeds,
+    };
   }
 }
 
