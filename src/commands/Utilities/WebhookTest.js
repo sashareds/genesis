@@ -50,7 +50,7 @@ class UserInfo extends Command {
       guildsWithUser.splice(0, 24) :
       guildsWithUser;
     const embed = new UserInfoEmbed(this.bot, guilds, user, member, message);
-    await this.messageManager.webhook(ctx, { embed: this.messageManager.webhookWrapper(embed) });
+    await this.messageManager.webhook(ctx, { embed: this.messageManager.webhookWrapEmbed(embed) });
     return this.messageManager.statuses.SUCCESS;
   }
 }
